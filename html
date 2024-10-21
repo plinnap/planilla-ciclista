@@ -1,0 +1,112 @@
+!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Ciclistas</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #FFFFFF;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #searchBar {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        #searchInput {
+            flex-grow: 1;
+            padding: 10px;
+            font-size: 16px;
+        }
+        #searchButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+        }
+        #adminForm {
+            margin-top: 50px;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Buscador de Ciclistas</h1>
+        
+        <div id="searchBar">
+            <input type="text" id="searchInput" placeholder="Ingrese el número del ciclista">
+            <button id="searchButton">Buscar</button>
+        </div>
+        
+        <div id="result"></div>
+        
+        <div id="adminForm">
+            <h2>Administración de Ciclistas</h2>
+            <input type="text" id="numberInput" placeholder="Número">
+            <input type="text" id="firstNameInput" placeholder="Nombre">
+            <input type="text" id="lastNameInput" placeholder="Apellido">
+            <input type="text" id="teamInput" placeholder="Equipo">
+            <button id="addButton">Agregar/Actualizar</button>
+            <button id="deleteButton">Eliminar</button>
+        </div>
+    </div>
+
+    <script>
+        let cyclists = [];
+
+        function searchCyclist() {
+            const number = document.getElementById('searchInput').value;
+            const resultDiv = document.getElementById('result');
+            const cyclist = cyclists.find(c => c.number === number);
+            
+            if (cyclist) {
+                resultDiv.innerHTML = `Nombre: ${cyclist.firstName} ${cyclist.lastName}, Equipo: ${cyclist.team}`;
+            } else {
+                resultDiv.innerHTML = "Ciclista no encontrado.";
+            }
+        }
+
+        function addOrUpdateCyclist() {
+            const number = document.getElementById('numberInput').value;
+            const firstName = document.getElementById('firstNameInput').value;
+            const lastName = document.getElementById('lastNameInput').value;
+            const team = document.getElementById('teamInput').value;
+            
+            const index = cyclists.findIndex(c => c.number === number);
+            if (index !== -1) {
+                cyclists[index] = { number, firstName, lastName, team };
+            } else {
+                cyclists.push({ number, firstName, lastName, team });
+            }
+            
+            alert("Ciclista agregado/actualizado con éxito.");
+        }
+
+        function deleteCyclist() {
+            const number = document.getElementById('numberInput').value;
+            cyclists = cyclists.filter(c => c.number !== number);
+            alert("Ciclista eliminado con éxito.");
+        }
+
+        document.getElementById('searchButton').addEventListener('click', searchCyclist);
+        document.getElementById('addButton').addEventListener('click', addOrUpdateCyclist);
+        document.getElementById('deleteButton').addEventListener('click', deleteCyclist);
+    </script>
+</body>
+</html>
+
